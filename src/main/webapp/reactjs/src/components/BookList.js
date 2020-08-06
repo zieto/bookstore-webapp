@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Card, Table, Image, Button, ButtonGroup} from "react-bootstrap";
+import {Card, Table, Image, Button} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faList, faEdit, faTrash} from "@fortawesome/free-solid-svg-icons"
 import axios from "axios";

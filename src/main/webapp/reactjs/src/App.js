@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 
-import {Container, Row, Jumbotron, Col} from "react-bootstrap";
+import {Container, Row, Col} from "react-bootstrap";
 import {BrowserRouter, Switch, Route} from "react-router-dom";
 
 import NavigationBar from './components/NavigationBar';

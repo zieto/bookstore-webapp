@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Card, Form, Button, Col, Toast} from "react-bootstrap";
+import {Card, Form, Button, Col} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faSave, faPlusSquare, faUndo} from "@fortawesome/free-solid-svg-icons"
 import ToastSuccess from "./ToastSuccess"

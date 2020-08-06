@@ -23,7 +23,7 @@ public interface Resource<T> {
     ResponseEntity<T> update(@RequestBody Book book);
 
     @DeleteMapping("{id}")
-    ResponseEntity<T> deleteById(@PathVariable Long id);
+    ResponseEntity<String> deleteById(@PathVariable Long id);
 
 }
 
