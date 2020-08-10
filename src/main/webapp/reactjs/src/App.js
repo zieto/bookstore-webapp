@@ -9,6 +9,7 @@ import WelcomeMsg from "./components/WelcomeMsg";
 import Footer from "./components/Footer";
 import Book from "./components/Book";
 import BookList from "./components/BookList";
+import BookEdit from "./components/BookEdit";
 
 function App() {
     const marginTop = {
@@ -25,6 +26,7 @@ function App() {
                     <Switch>
                         <Route path="/" exact component={WelcomeMsg}/>
                         <Route path="/add" exact component={Book}/>
+                        <Route path="/edit/:id/" exact component={BookEdit}/>
                         <Route path="/list" exact component={BookList}/>
                     </Switch>
                 </Col>

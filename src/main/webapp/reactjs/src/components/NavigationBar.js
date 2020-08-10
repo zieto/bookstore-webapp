@@ -1,7 +1,8 @@
 import React from 'react';
 
-import {Navbar, Nav} from 'react-bootstrap';
+import {Navbar, Nav, Button} from 'react-bootstrap';
 import {Link} from "react-router-dom";
+
 
 class NavigationBar extends React.Component{
     render() {
@@ -14,6 +15,11 @@ class NavigationBar extends React.Component{
                     <Link to={"add"} className="nav-link">Dodaj książkę</Link>
                     <Link to={"list"} className="nav-link">Lista książek</Link>
                 </Nav>
+                <Nav.Item className="ml-auto">
+                    <Button href="login" variant="success" type="submit">
+                       Zaloguj się
+                    </Button>
+                </Nav.Item>
             </Navbar>
             );
     }
