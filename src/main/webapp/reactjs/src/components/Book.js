@@ -10,7 +10,7 @@ import axios from "axios"
 class Book extends React.Component {
 
     initialState = {
-        title:'', author:'', coverPhotoURL:'', isbnNumber:'', price:'', language:''
+        title:'', author:'', coverPhotoURL:'', isbnNumber:'', price:'', language:'', available: true
     };
 
     constructor(props){
@@ -30,7 +30,8 @@ class Book extends React.Component {
             coverPhotoURL: this.state.coverPhotoURL,
             isbnNumber: this.state.isbnNumber,
             price: this.state.price,
-            language: this.state.language
+            language: this.state.language,
+            available: this.state.available
         };
 
         axios.post("http://localhost:8080/rest/books",book)
@@ -51,11 +52,14 @@ class Book extends React.Component {
     };
 
     bookChange = event => {
+
+        const target = event.target;
+        const value = target.name === "available" ? target.checked : target.value;
+
         this.setState({
-            [event.target.name]:event.target.value
+            [target.name] : value
         });
     };
-
 
 
 
@@ -129,6 +133,20 @@ class Book extends React.Component {
                                                   onChange={this.bookChange}/>
                                 </Form.Group>
                             </Form.Row>
+                            <Form.Row>
+                                <Form.Group controlId="formGridAvailable">
+                                    <Form.Label>
+                                        Dostępna:
+                                    </Form.Label>
+                                    {' '}
+                                        <input
+                                            name="available"
+                                            type="checkbox"
+                                            checked={this.state.available}
+                                            onChange={this.bookChange}
+                                            />
+                                </Form.Group>
+                            </Form.Row>
                         </Card.Body>
                         <Card.Footer style={{"textAlign":"right"}}>
                             <Button variant="info" type="reset">
@@ -145,6 +163,7 @@ class Book extends React.Component {
 
         );
     }
+
 }
 
 export default Book;

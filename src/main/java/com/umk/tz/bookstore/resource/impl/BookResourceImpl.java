@@ -21,6 +21,11 @@ public class BookResourceImpl implements Resource<Book> {
     private IService<Book> bookService;
 
     @Override
+    public ResponseEntity<Collection<Book>> findAll(String searchText){
+        return new ResponseEntity<>(bookService.findAll(searchText), HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Collection<Book>> findAll() {
         return new ResponseEntity<>(bookService.findAll(), HttpStatus.OK);
     }

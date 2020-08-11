@@ -11,7 +11,7 @@ import axios from "axios"
 class BookEdit extends React.Component {
 
     initialState = {
-        id:'', title:'', author:'', coverPhotoURL:'', isbnNumber:'', price:'', language:''
+        id:'', title:'', author:'', coverPhotoURL:'', isbnNumber:'', price:'', language:'', available: true
     };
 
     componentDidMount() {
@@ -27,7 +27,8 @@ class BookEdit extends React.Component {
                             coverPhotoURL: response.data.coverPhotoURL,
                             isbnNumber: response.data.isbnNumber,
                             price: response.data.price,
-                            language: response.data.language
+                            language: response.data.language,
+                            available: response.data.available
                         });
                     }
 
@@ -57,7 +58,8 @@ class BookEdit extends React.Component {
             coverPhotoURL: this.state.coverPhotoURL,
             isbnNumber: this.state.isbnNumber,
             price: this.state.price,
-            language: this.state.language
+            language: this.state.language,
+            available: this.state.available
         };
 
         axios.put("http://localhost:8080/rest/books",book)
@@ -79,11 +81,14 @@ class BookEdit extends React.Component {
     };
 
     bookChange = event => {
+
+        const target = event.target;
+        const value = target.name === "available" ? target.checked : target.value;
+
         this.setState({
-            [event.target.name]:event.target.value
+            [target.name] : value
         });
     };
-
 
 
 
@@ -160,6 +165,20 @@ class BookEdit extends React.Component {
                                                   placeholder="Podaj numer ISBN książki"
                                                   value={this.state.isbnNumber}
                                                   onChange={this.bookChange}/>
+                                </Form.Group>
+                            </Form.Row>
+                            <Form.Row>
+                                <Form.Group controlId="formGridAvailable">
+                                    <Form.Label>
+                                        Dostępna:
+                                    </Form.Label>
+                                    {' '}
+                                    <input
+                                        name="available"
+                                        type="checkbox"
+                                        checked={this.state.available}
+                                        onChange={this.bookChange}
+                                    />
                                 </Form.Group>
                             </Form.Row>
                         </Card.Body>

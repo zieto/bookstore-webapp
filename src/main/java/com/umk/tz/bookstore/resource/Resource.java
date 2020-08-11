@@ -10,6 +10,9 @@ import java.util.Collection;
 
 public interface Resource<T> {
 
+    @GetMapping("/search/{searchText}")
+    ResponseEntity<Collection<T>> findAll(@PathVariable String searchText);
+
     @GetMapping
     ResponseEntity<Collection<T>> findAll();
 

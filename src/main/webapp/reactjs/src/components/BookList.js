@@ -1,10 +1,11 @@
 import React from 'react';
 
-import {Card, Table, Image, Button} from "react-bootstrap";
+import {Card, Table, Image, Button, FormControl, InputGroup} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {faList, faEdit, faTrash} from "@fortawesome/free-solid-svg-icons"
+import {faList, faEdit, faTrash, faCheck, faTimes} from "@fortawesome/free-solid-svg-icons"
 import axios from "axios";
 import ToastSuccess from "./ToastSuccess";
+import {faSearch} from "@fortawesome/free-solid-svg-icons/faSearch";
 
 
 class BookList extends React.Component {
@@ -12,7 +13,8 @@ class BookList extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            books : []
+            books : [],
+            search : ''
         };
     }
 
@@ -39,15 +41,61 @@ class BookList extends React.Component {
             })
     };
 
+    icon(tf){
+        if (tf === "true"){
+            return <FontAwesomeIcon icon={faCheck}/>
+        }
+        else if (tf === "false"){
+            return <FontAwesomeIcon icon={faTimes}/>
+        }
+    }
+
+    searchChange = event => {
+        this.setState({
+            [event.target.name] : event.target.value
+        });
+    };
+
+    cancelSearch = () => {
+        this.setState({"search" : ''});
+    };
+
+    searchData = () => {
+        axios.get("http://localhost:8080/rest/books/search/"+this.state.search+"?")
+            .then(response => response.data)
+            .then((data) =>{
+                this.setState({books: data});
+            });
+    };
+
+
 
     render() {
+
         return(
             <div>
                 <div style={{"display":this.state.show ? "block" : "none"}}>
                     <ToastSuccess children={{show:this.state.show, message:"Pomyślnie usunięto książkę", type:"danger"}}/>
                 </div>
             <Card className={"border border-dark bg-dark text-white"}>
-            <Card.Header><FontAwesomeIcon icon={faList} /> Lista książek</Card.Header>
+            <Card.Header>
+                <div style={{"float":"left"}}>
+                <FontAwesomeIcon icon={faList} /> Lista książek
+                </div>
+                <div style={{"float":"right"}}>
+                    <InputGroup>
+                        <FormControl placeholder="Szukaj" name="search" value={this.state.search} className={"bg-dark text-white"}
+                            onChange={this.searchChange}
+                            />
+                            <Button variant="outline-info" type="button" onClick={this.searchData}>
+                                <FontAwesomeIcon icon={faSearch}/>
+                            </Button>
+                            <Button variant="outline-danger" type="button" onClick={this.cancelSearch}>
+                                <FontAwesomeIcon icon={faTimes}/>
+                            </Button>
+                    </InputGroup>
+                </div>
+            </Card.Header>
                 <Card.Body>
                     <Table>
                         <Table bordered hover striped variant="dark">
@@ -58,6 +106,7 @@ class BookList extends React.Component {
                                 <th>Cena</th>
                                 <th>Język</th>
                                 <th>Nr ISBN</th>
+                                <th>Dostępna</th>
                                 <th>Opcje</th>
                             </tr>
                             </thead>
@@ -77,9 +126,9 @@ class BookList extends React.Component {
                                             <td>{book.price}</td>
                                             <td>{book.language}</td>
                                             <td>{book.isbnNumber}</td>
+                                            <td>{this.icon(book.available.toString())}</td>
                                             <td>
                                                 <Button href={"edit/"+book.id} variant="outline-primary"><FontAwesomeIcon icon={faEdit}/></Button>
-                                                {' '}
                                                 <Button variant="outline-danger" onClick={this.deleteBook.bind(this, book.id)}><FontAwesomeIcon icon={faTrash}/></Button>
                                             </td>
                                         </tr>
