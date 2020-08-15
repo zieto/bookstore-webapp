@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/books")
@@ -32,7 +33,8 @@ public class BookResourceImpl implements Resource<Book> {
 
     @Override
     public ResponseEntity<Book> findById(Long id) {
-        return new ResponseEntity<>(bookService.findById(id), HttpStatus.OK);
+        Optional<Book> book = bookService.findById(id);
+        return new ResponseEntity<>(book.get(), HttpStatus.OK);
     }
 
     @Override

@@ -7,9 +7,14 @@ import {BrowserRouter, Switch, Route} from "react-router-dom";
 import NavigationBar from './components/NavigationBar';
 import WelcomeMsg from "./components/WelcomeMsg";
 import Footer from "./components/Footer";
-import Book from "./components/Book";
+import BookAdd from "./components/BookAdd";
 import BookList from "./components/BookList";
 import BookEdit from "./components/BookEdit";
+import Login from "./components/Login";
+import AuthenticatedRoute from "./components/AuthenticatedRoute";
+import Logout from "./components/Logout";
+import NotAuthenticatedRoute from "./components/NotAuthenticatedRoute";
+
 
 function App() {
     const marginTop = {
@@ -17,17 +22,19 @@ function App() {
     };
 
 
-  return (
+    return (
     <BrowserRouter>
-        <NavigationBar/>
-        <Container>
+       <NavigationBar/>
+       <Container>
             <Row>
                 <Col lg={12} style={marginTop}>
                     <Switch>
                         <Route path="/" exact component={WelcomeMsg}/>
-                        <Route path="/add" exact component={Book}/>
-                        <Route path="/edit/:id/" exact component={BookEdit}/>
+                        <AuthenticatedRoute path="/add" exact component={BookAdd}/>
+                        <AuthenticatedRoute path="/edit/:id/" exact component={BookEdit}/>
                         <Route path="/list" exact component={BookList}/>
+                        <NotAuthenticatedRoute path="/login" exact component={Login}/>
+                        <Route path="/logout" exact component={Logout}/>
                     </Switch>
                 </Col>
             </Row>

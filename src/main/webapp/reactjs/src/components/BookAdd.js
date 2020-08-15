@@ -7,7 +7,7 @@ import ToastSuccess from "./ToastSuccess"
 
 import axios from "axios"
 
-class Book extends React.Component {
+class BookAdd extends React.Component {
 
     initialState = {
         title:'', author:'', coverPhotoURL:'', isbnNumber:'', price:'', language:'', available: true
@@ -34,7 +34,11 @@ class Book extends React.Component {
             available: this.state.available
         };
 
-        axios.post("http://localhost:8080/rest/books",book)
+        axios.post("http://localhost:8080/rest/books",book, {
+            auth: {
+                username: 'admin',
+                password: 'dummy'
+            }})
             .then(response => {
                 if(response.data != null) {
                     this.setState({"show":true});
@@ -44,7 +48,7 @@ class Book extends React.Component {
                 }
             });
         this.setState(this.initialState);
-    }
+    };
 
 
     resetBook = () => {
@@ -166,4 +170,4 @@ class Book extends React.Component {
 
 }
 
-export default Book;
+export default BookAdd;

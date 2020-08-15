@@ -17,7 +17,11 @@ class BookEdit extends React.Component {
     componentDidMount() {
         const bookId = +this.props.match.params.id;
         if (bookId) {
-            axios.get("http://localhost:8080/rest/books/" + bookId)
+            axios.get("http://localhost:8080/rest/books/" + bookId, {
+                auth: {
+                    username: 'admin',
+                    password: 'dummy'
+                }})
                 .then(response => {
                     if (response.data != null) {
                         this.setState({
@@ -62,7 +66,11 @@ class BookEdit extends React.Component {
             available: this.state.available
         };
 
-        axios.put("http://localhost:8080/rest/books",book)
+        axios.put("http://localhost:8080/rest/books",book, {
+            auth: {
+                username: 'admin',
+                password: 'dummy'
+            }})
             .then(response => {
                 if(response.data != null) {
                     this.setState({"show":true});

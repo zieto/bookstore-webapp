@@ -6,6 +6,7 @@ import {faList, faEdit, faTrash, faCheck, faTimes} from "@fortawesome/free-solid
 import axios from "axios";
 import ToastSuccess from "./ToastSuccess";
 import {faSearch} from "@fortawesome/free-solid-svg-icons/faSearch";
+import AuthenticationService from "../AuthenticationService";
 
 
 class BookList extends React.Component {
@@ -19,7 +20,11 @@ class BookList extends React.Component {
     }
 
     componentDidMount() {
-        axios.get("http://localhost:8080/rest/books")
+        axios.get("http://localhost:8080/rest/books", {
+        auth: {
+            username: 'admin',
+            password: 'dummy'
+        }})
             .then(response => response.data)
             .then((data) =>{
                 this.setState({books: data});
@@ -27,7 +32,10 @@ class BookList extends React.Component {
     }
 
     deleteBook = (bookId) => {
-        axios.delete("http://localhost:8080/rest/books/"+bookId)
+        axios.delete("http://localhost:8080/rest/books/"+bookId, {auth: {
+                username: 'admin',
+                password: 'dummy'
+            }})
             .then(response => {
                 if(response.data != null){
                     this.setState({"show":true});
@@ -58,19 +66,32 @@ class BookList extends React.Component {
 
     cancelSearch = () => {
         this.setState({"search" : ''});
+        this.componentDidMount();
     };
 
     searchData = () => {
-        axios.get("http://localhost:8080/rest/books/search/"+this.state.search+"?")
-            .then(response => response.data)
-            .then((data) =>{
-                this.setState({books: data});
-            });
+        if (this.state.search !== '') {
+            axios.get("http://localhost:8080/rest/books/search/" + this.state.search + "?", {
+                auth: {
+                    username: 'admin',
+                    password: 'dummy'
+                }
+            })
+                .then(response => response.data)
+                .then((data) => {
+                    this.setState({books: data});
+                });
+        }
+        else if (this.state.search === ''){
+            this.componentDidMount();
+        }
     };
 
 
 
     render() {
+
+        const isUserLoggedIn = AuthenticationService.isUserLoggedIn();
 
         return(
             <div>
@@ -97,7 +118,6 @@ class BookList extends React.Component {
                 </div>
             </Card.Header>
                 <Card.Body>
-                    <Table>
                         <Table bordered hover striped variant="dark">
                             <thead>
                             <tr>
@@ -107,19 +127,20 @@ class BookList extends React.Component {
                                 <th>Język</th>
                                 <th>Nr ISBN</th>
                                 <th>Dostępna</th>
-                                <th>Opcje</th>
+                                {isUserLoggedIn && <th>Opcje</th>}
                             </tr>
                             </thead>
                             <tbody>
                             {
                                 this.state.books.length === 0 ?
                                 <tr align="center">
-                                    <td colSpan="6">Brak dostępnych książek.</td>
+                                    {isUserLoggedIn && <td colSpan="7">Brak dostępnych książek.</td>}
+                                    {!isUserLoggedIn && <td colSpan="6">Brak dostępnych książek.</td>}
                                 </tr> :
                                     this.state.books.map((book) =>(
                                         <tr key={book.id}>
                                             <td>
-                                                <Image src={book.coverPhotoURL} roundedCircle width="25" height="25"/>
+                                                <Image src={book.coverPhotoURL} roundedCircle width="30" height="30"/>
                                                 {' '}{book.title}
                                             </td>
                                             <td>{book.author}</td>
@@ -127,17 +148,16 @@ class BookList extends React.Component {
                                             <td>{book.language}</td>
                                             <td>{book.isbnNumber}</td>
                                             <td>{this.icon(book.available.toString())}</td>
-                                            <td>
+                                            {isUserLoggedIn && <td>
                                                 <Button href={"edit/"+book.id} variant="outline-primary"><FontAwesomeIcon icon={faEdit}/></Button>
                                                 <Button variant="outline-danger" onClick={this.deleteBook.bind(this, book.id)}><FontAwesomeIcon icon={faTrash}/></Button>
-                                            </td>
+                                            </td>}
                                         </tr>
                                         )
                                     )
                             }
                             </tbody>
                         </Table>
-                    </Table>
                 </Card.Body>
             </Card>
             </div>

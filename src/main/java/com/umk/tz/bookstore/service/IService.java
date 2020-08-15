@@ -1,6 +1,7 @@
 package com.umk.tz.bookstore.service;
 
 import java.util.Collection;
+import java.util.Optional;
 
 public interface IService<T> {
 
@@ -8,7 +9,7 @@ public interface IService<T> {
 
     Collection<T> findAll();
 
-    T findById(Long id);
+    Optional<T> findById(Long id);
 
     T saveOrUpdate(T t);
 
