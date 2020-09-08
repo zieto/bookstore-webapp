@@ -105,7 +105,7 @@ class BookList extends React.Component {
                 </div>
                 <div style={{"float":"right"}}>
                     <InputGroup>
-                        <FormControl placeholder="Szukaj" name="search" value={this.state.search} className={"bg-dark text-white"}
+                        <FormControl required autoComplete="off" placeholder="Szukaj" name="search" value={this.state.search} className={"bg-dark text-white"}
                             onChange={this.searchChange}
                             />
                             <Button variant="outline-info" type="button" onClick={this.searchData}>

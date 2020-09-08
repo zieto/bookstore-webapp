@@ -5,10 +5,16 @@ class WelcomeMsg extends React.Component{
     render() {
         return (
             <Jumbotron className="bg-dark text-white">
-                <h1>Hello, world!</h1>
+                <h1>Witamy w eBookStore!</h1>
                 <p>
-                    This is a simple hero unit, a simple jumbotron-style component for calling
-                    extra attention to featured content or information.
+                </p>
+                <p>
+                </p>
+                <p>
+                    Ta strona jest prostą aplikacją webową przedstawiającą dostępne książki w księgarni.
+                </p>
+                <p>
+                    Użytkownik może przeglądać i wyszukiwać interesujące go książki, a po zalogowaniu ma możliwość edytowania, dodawania nowych i usuwania książek.
                 </p>
             </Jumbotron>
         )
